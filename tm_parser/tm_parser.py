@@ -1,14 +1,13 @@
-# parser/parser.py
+# tm_parser/tm_parser.py
+
 import sys
 sys.path.insert(0, '.')
 
 import ply.yacc as yacc
 from lexer.lexer import tokens  # Reuse tokens from lexer.py
 
-# Store transitions here
 transitions = []
 
-# Grammar rules
 def p_statements_multiple(p):
     '''statements : statements statement'''
     pass
@@ -37,7 +36,7 @@ def p_error(p):
 def parse_tm_config(filepath):
     import lexer.lexer as lexer_module
     global transitions
-    transitions = []  # Reset in case called multiple times
+    transitions = []
 
     lexer = lexer_module.lexer
     parser = yacc.yacc()
@@ -50,39 +49,11 @@ def parse_tm_config(filepath):
             for t in transitions:
                 print(t)
 
-            # Run semantic check
             from semantic.semantic import check_semantics
             check_semantics(transitions)
+            return transitions  # ✅ Return transitions here
+
     except FileNotFoundError:
         print(f"[Error] Config file not found: {filepath}")
+        return []
 
-
-# Run the parser
-if __name__ == "__main__":
-    import lexer.lexer as lexer_module
-    from semantic.semantic import check_semantics
-    import json
-    import os
-
-    lexer = lexer_module.lexer
-    parser = yacc.yacc()
-
-    try:
-        with open("input/config.tm", "r") as file:
-            data = file.read()
-            parser.parse(data, lexer=lexer)
-
-            print("=== PARSED TRANSITIONS ===")
-            for t in transitions:
-                print(t)
-
-            print("\n=== SEMANTIC ANALYSIS ===")
-            check_semantics(transitions)
-
-            # Save transitions to JSON
-            os.makedirs("output", exist_ok=True)
-            with open("output/transitions.json", "w") as f:
-                json.dump(transitions, f, indent=4)
-
-    except FileNotFoundError:
-        print("config.tm not found!")
