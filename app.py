@@ -44,7 +44,9 @@ if st.button("🚀 Run Turing Machine"):
     else:
         # Parse and analyze
         parser.parse_tm_config(CONFIG_PATH)
-        generate_tm_graph(parser.transitions)
+        with st.expander("Show Turing Machine Graph"):
+         generate_tm_graph(parser.transitions)  # New (shows DOT in browser)
+
 
         # Run simulation
         output = run_turing_machine(user_input, parser.transitions)

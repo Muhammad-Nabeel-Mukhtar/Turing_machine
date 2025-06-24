@@ -1,21 +1,25 @@
+# visualizer/ast_cfg_visualizer.py
 import graphviz
-import os
+import streamlit as st  # Streamlit renderer
 
-def generate_tm_graph(transitions, output_path="output/tm_cfg_ast.png"):
-    dot = graphviz.Digraph(comment="Turing Machine CFG/AST")
+def generate_tm_graph(transitions):
+    dot = graphviz.Digraph()
+    dot.attr(rankdir='LR')
 
-    # Add all states as nodes
-    states = set(t["current_state"] for t in transitions).union(
-        t["next_state"] for t in transitions)
+    # Add states as nodes
+    states = set()
+    for t in transitions:
+        states.add(t['current_state'])
+        states.add(t['next_state'])
+
     for state in states:
-        shape = "doublecircle" if state.lower() == "qh" else "circle"
+        shape = 'doublecircle' if state.lower() in ['qh', 'halt'] else 'circle'
         dot.node(state, shape=shape)
 
-    # Add edges with labels
+    # Add transitions as edges
     for t in transitions:
         label = f"{t['read_symbol']}→{t['write_symbol']},{t['direction']}"
-        dot.edge(t["current_state"], t["next_state"], label=label)
+        dot.edge(t['current_state'], t['next_state'], label=label)
 
-    # Render as PNG
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    dot.render(output_path, format="png", cleanup=True)
+    # Render in Streamlit
+    st.graphviz_chart(dot)
