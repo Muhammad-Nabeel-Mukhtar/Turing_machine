@@ -1,0 +1,65 @@
+[
+    {
+        "current_state": "q0",
+        "read_symbol": "1",
+        "next_state": "q0",
+        "write_symbol": "1",
+        "direction": "R"
+    },
+    {
+        "current_state": "q0",
+        "read_symbol": "0",
+        "next_state": "q0",
+        "write_symbol": "0",
+        "direction": "R"
+    },
+    {
+        "current_state": "q0",
+        "read_symbol": "_",
+        "next_state": "q1",
+        "write_symbol": "_",
+        "direction": "L"
+    },
+    {
+        "current_state": "q1",
+        "read_symbol": "1",
+        "next_state": "q1",
+        "write_symbol": "0",
+        "direction": "L"
+    },
+    {
+        "current_state": "q1",
+        "read_symbol": "0",
+        "next_state": "q2",
+        "write_symbol": "1",
+        "direction": "S"
+    },
+    {
+        "current_state": "q1",
+        "read_symbol": "_",
+        "next_state": "q2",
+        "write_symbol": "1",
+        "direction": "S"
+    },
+    {
+        "current_state": "q2",
+        "read_symbol": "1",
+        "next_state": "q2",
+        "write_symbol": "1",
+        "direction": "S"
+    },
+    {
+        "current_state": "q2",
+        "read_symbol": "0",
+        "next_state": "q2",
+        "write_symbol": "0",
+        "direction": "S"
+    },
+    {
+        "current_state": "q2",
+        "read_symbol": "_",
+        "next_state": "qH",
+        "write_symbol": "_",
+        "direction": "S"
+    }
+]
