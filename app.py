@@ -3,7 +3,7 @@ import os
 import shutil
 
 # Custom modules
-from tm_parser import parser
+from tm_parser.tm_parser import parse_tm_config
 from visualizer.ast_cfg_visualizer import generate_tm_graph
 from tm_engine.simulator import run_turing_machine
 
@@ -42,20 +42,22 @@ if st.button("🚀 Run Turing Machine"):
     elif not all(c in '01' for c in user_input):
         st.error("Invalid input: only binary digits allowed.")
     else:
-        # Parse and analyze
-        parser.parse_tm_config(CONFIG_PATH)
-        with st.expander("Show Turing Machine Graph"):
-         generate_tm_graph(parser.transitions)  # New (shows DOT in browser)
+        transitions = parse_tm_config(CONFIG_PATH)
+        if not transitions:
+            st.error("❌ Failed to parse config file.")
+        else:
+            # Visualize CFG/AST
+            with st.expander("📊 View Transition Graph"):
+                try:
+                    generate_tm_graph(transitions)
+                    if os.path.exists(GRAPH_PATH):
+                        st.image(GRAPH_PATH, caption="Transition Graph", use_column_width=True)
+                except Exception as e:
+                    st.warning(f"[Graphviz Error] Could not generate graph: {e}")
 
+            # Run Turing Machine
+            output = run_turing_machine(transitions, user_input)
 
-        # Run simulation
-        output = run_turing_machine(user_input, parser.transitions)
-
-        st.success("✅ Simulation Complete!")
-        st.subheader("🧾 Final Tape Output:")
-        st.code(output, language="text")
-
-        # Show CFG graph
-        if os.path.exists(GRAPH_PATH):
-            st.subheader("📊 AST / CFG Visualization")
-            st.image(GRAPH_PATH, caption="Transition Graph", use_column_width=True)
+            st.success("✅ Simulation Complete!")
+            st.subheader("🧾 Final Tape Output:")
+            st.code(output, language="text")
