@@ -6,7 +6,7 @@ import os
 sys.path.insert(0, '.')
 
 from parser import parser
-from tm_engine.simulator import simulate_turing_machine
+from tm_engine.simulator import run_turing_machine
 from visualizer.ast_cfg_visualizer import generate_tm_graph
 
 # === Pygame Setup ===
@@ -85,7 +85,7 @@ while running:
             if run_button.collidepoint(event.pos):
                 if all(c in '01' for c in user_input):
                     try:
-                        output_tape = simulate_turing_machine(parser.transitions, user_input)
+                        output_tape = run_turing_machine(parser.transitions, user_input)
                     except Exception as e:
                         output_tape = f"[!] Runtime Error: {str(e)}"
                 else:

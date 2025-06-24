@@ -1,36 +1,35 @@
 # tm_engine/simulator.py
 
-def simulate_turing_machine(transitions, input_tape):
+def run_turing_machine(transitions, input_tape):
     """
     Simulates the execution of a Turing Machine.
-    
+
     Parameters:
         transitions (list of dict): The parsed TM transitions.
         input_tape (str): The input binary tape (e.g., '1101').
-        
+
     Returns:
         str: The final tape after halting.
     """
 
-    # Initialize tape and state
     tape = list(input_tape) + ['_']
     head = 0
     state = 'q0'
     steps = 0
     max_steps = 1000
 
-    print("=== Turing Machine Execution ===")
+    # Uncomment for debugging in local console
+    # print("=== Turing Machine Execution ===")
+
     while steps < max_steps:
         current_symbol = tape[head] if head < len(tape) else '_'
         transition_found = False
 
         for t in transitions:
             if t['current_state'] == state and t['read_symbol'] == current_symbol:
-                # Log transition
-                print(f"→ State: {state} Read: {current_symbol} → "
-                      f"Write: {t['write_symbol']} Move: {t['direction']} → {t['next_state']}")
+                # print(f"→ State: {state} Read: {current_symbol} → "
+                #       f"Write: {t['write_symbol']} Move: {t['direction']} → {t['next_state']}")
 
-                # Write symbol and move head
                 tape[head] = t['write_symbol']
                 direction = t['direction']
                 state = t['next_state']
@@ -47,11 +46,11 @@ def simulate_turing_machine(transitions, input_tape):
                 break
 
         if not transition_found:
-            print(f"✖ No transition for state '{state}' and symbol '{current_symbol}'")
+            # print(f"✖ No transition for state '{state}' and symbol '{current_symbol}'")
             break
 
         steps += 1
 
-    print("\n✅ Final Tape:")
-    print(''.join(tape).rstrip('_'))
+    # print("\n✅ Final Tape:")
+    # print(''.join(tape).rstrip('_'))
     return ''.join(tape).rstrip('_')
