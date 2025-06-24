@@ -3,7 +3,7 @@ import os
 import shutil
 
 # Custom modules
-from parser import parser
+from tm_parser import parser
 from visualizer.ast_cfg_visualizer import generate_tm_graph
 from tm_engine.simulator import run_turing_machine
 
