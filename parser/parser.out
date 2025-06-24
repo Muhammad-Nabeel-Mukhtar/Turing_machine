@@ -1,0 +1,104 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> statements
+Rule 1     statements -> statements statement
+Rule 2     statements -> statement
+Rule 3     statement -> STATE SYMBOL ARROW STATE SYMBOL DIRECTION
+
+Terminals, with rules where they appear
+
+ARROW                : 3
+DIRECTION            : 3
+STATE                : 3 3
+SYMBOL               : 3 3
+error                : 
+
+Nonterminals, with rules where they appear
+
+statement            : 1 2
+statements           : 1 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . statements
+    (1) statements -> . statements statement
+    (2) statements -> . statement
+    (3) statement -> . STATE SYMBOL ARROW STATE SYMBOL DIRECTION
+
+    STATE           shift and go to state 3
+
+    statements                     shift and go to state 1
+    statement                      shift and go to state 2
+
+state 1
+
+    (0) S' -> statements .
+    (1) statements -> statements . statement
+    (3) statement -> . STATE SYMBOL ARROW STATE SYMBOL DIRECTION
+
+    STATE           shift and go to state 3
+
+    statement                      shift and go to state 4
+
+state 2
+
+    (2) statements -> statement .
+
+    STATE           reduce using rule 2 (statements -> statement .)
+    $end            reduce using rule 2 (statements -> statement .)
+
+
+state 3
+
+    (3) statement -> STATE . SYMBOL ARROW STATE SYMBOL DIRECTION
+
+    SYMBOL          shift and go to state 5
+
+
+state 4
+
+    (1) statements -> statements statement .
+
+    STATE           reduce using rule 1 (statements -> statements statement .)
+    $end            reduce using rule 1 (statements -> statements statement .)
+
+
+state 5
+
+    (3) statement -> STATE SYMBOL . ARROW STATE SYMBOL DIRECTION
+
+    ARROW           shift and go to state 6
+
+
+state 6
+
+    (3) statement -> STATE SYMBOL ARROW . STATE SYMBOL DIRECTION
+
+    STATE           shift and go to state 7
+
+
+state 7
+
+    (3) statement -> STATE SYMBOL ARROW STATE . SYMBOL DIRECTION
+
+    SYMBOL          shift and go to state 8
+
+
+state 8
+
+    (3) statement -> STATE SYMBOL ARROW STATE SYMBOL . DIRECTION
+
+    DIRECTION       shift and go to state 9
+
+
+state 9
+
+    (3) statement -> STATE SYMBOL ARROW STATE SYMBOL DIRECTION .
+
+    STATE           reduce using rule 3 (statement -> STATE SYMBOL ARROW STATE SYMBOL DIRECTION .)
+    $end            reduce using rule 3 (statement -> STATE SYMBOL ARROW STATE SYMBOL DIRECTION .)
+
